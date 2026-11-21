@@ -1,0 +1,13 @@
+user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
+user_pref("browser.startup.homepage", "about:home");
+user_pref("browser.startup.page", 1);
+user_pref("browser.newtabpage.activity-stream.feeds.topsites", true);
+user_pref("browser.newtabpage.activity-stream.showSponsoredTopSites", false);
+user_pref("browser.newtabpage.activity-stream.newtabWallpapers.enabled", false);
+user_pref("browser.newtabpage.activity-stream.newtabWallpapers.v2.enabled", false);
+user_pref("browser.newtabpage.activity-stream.showWeather", false);
+user_pref("browser.newtabpage.activity-stream.feeds.section.topstories", false);
+user_pref("browser.newtabpage.activity-stream.feeds.system.topstories", false);
+user_pref("browser.newtabpage.activity-stream.widgets.system.enabled", false);
+user_pref("browser.newtabpage.activity-stream.widgets.enabled", false);
+user_pref("browser.newtabpage.activity-stream.feeds.section.highlights", false);

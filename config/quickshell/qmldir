@@ -1,0 +1,23 @@
+AppIcon 1.0 AppIcon.qml
+Bar 1.0 Bar.qml
+HudFrame 1.0 HudFrame.qml
+HudPanel 1.0 HudPanel.qml
+HudSlider 1.0 HudSlider.qml
+HudSwitch 1.0 HudSwitch.qml
+Launcher 1.0 Launcher.qml
+Music 1.0 Music.qml
+Notifications 1.0 Notifications.qml
+Osd 1.0 Osd.qml
+Plate 1.0 Plate.qml
+PowerMenu 1.0 PowerMenu.qml
+QuickPanels 1.0 QuickPanels.qml
+RadioPort 1.0 RadioPort.qml
+Seg 1.0 Seg.qml
+singleton PanelState 1.0 PanelState.qml
+singleton Theme 1.0 Theme.qml
+SoundPanel 1.0 SoundPanel.qml
+Switcher 1.0 Switcher.qml
+Telemetry 1.0 Telemetry.qml
+Toast 1.0 Toast.qml
+TopBar 1.0 TopBar.qml
+Hatch 1.0 Hatch.qml

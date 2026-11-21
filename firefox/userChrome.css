@@ -1,0 +1,93 @@
+/* Night City HUD — Firefox UI: navy, muted teal, sharp corners */
+:root {
+  --nc-bg: #081020; --nc-surf: #0e1a30; --nc-line: #16233a; --nc-fg: #c9d1db;
+  --nc-muted: #8fa3b8; --nc-dim: #3a4a63; --nc-teal: #4fa3ae;
+  --toolbar-bgcolor: var(--nc-bg) !important;
+  --toolbar-color: var(--nc-fg) !important;
+  --lwt-accent-color: var(--nc-bg) !important;
+  --lwt-text-color: var(--nc-fg) !important;
+  --tab-selected-bgcolor: var(--nc-surf) !important;
+  --urlbar-box-bgcolor: var(--nc-surf) !important;
+  --toolbarbutton-icon-fill: var(--nc-muted) !important;
+  --focus-outline-color: var(--nc-teal) !important;
+  --arrowpanel-background: var(--nc-surf) !important;
+  --arrowpanel-color: var(--nc-fg) !important;
+  --arrowpanel-border-color: var(--nc-line) !important;
+  font-family: "Tektur", "Rajdhani", sans-serif !important;
+}
+#navigator-toolbox, #nav-bar, #TabsToolbar, #PersonalToolbar, #titlebar { background: var(--nc-bg) !important; border: 0 !important; }
+#navigator-toolbox { border-bottom: 1px solid var(--nc-line) !important; }
+
+/* tabs: flat plates, teal rule on the selected one */
+.tab-background { border-radius: 0 !important; margin-block: 3px !important; background: transparent !important; box-shadow: none !important; }
+.tab-background[selected] { background: var(--nc-surf) !important; border-top: 2px solid var(--nc-teal) !important; }
+.tabbrowser-tab:hover .tab-background:not([selected]) { background: #0e1a3099 !important; }
+.tab-label { font-family: "Rajdhani", "Tektur", sans-serif !important; font-weight: 700 !important; letter-spacing: .6px; font-size: 13px !important; }
+.tab-content { color: var(--nc-muted) !important; } .tabbrowser-tab[selected] .tab-content { color: var(--nc-fg) !important; }
+
+/* address bar: sharp, thin outline, teal when focused */
+#urlbar-background { border-radius: 0 !important; background: var(--nc-surf) !important; border: 1px solid var(--nc-line) !important; box-shadow: none !important; }
+#urlbar[focused] #urlbar-background, #urlbar[open] #urlbar-background { border-color: var(--nc-teal) !important; }
+#urlbar-input { font-family: "JetBrainsMono Nerd Font Mono", monospace !important; font-size: 13px !important; color: var(--nc-fg) !important; }
+.urlbarView { background: var(--nc-bg) !important; border: 1px solid var(--nc-line) !important; border-radius: 0 !important; }
+.urlbarView-row[selected] { background: #4fa3ae26 !important; }
+.urlbarView-row[selected]::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--nc-teal); }
+#searchbar, .searchbar-textbox { border-radius: 0 !important; }
+
+/* buttons, menus, panels: no rounded blobs */
+toolbarbutton, .toolbarbutton-1, .subviewbutton, menuitem, menu { border-radius: 0 !important; }
+toolbarbutton:hover, .subviewbutton:hover, menuitem[_moz-menuactive] { background: #4fa3ae26 !important; }
+menupopup, panel, .panel-arrow { --panel-border-radius: 0px; border-radius: 0 !important; }
+#PanelUI-menu-button, .tabs-newtab-button { border-radius: 0 !important; }
+
+/* bookmarks bar: quiet */
+#PersonalToolbar { padding-block: 2px !important; } .bookmark-item { color: var(--nc-muted) !important; }
+
+/* ============ v2: sharper HUD chrome ============ */
+:root { --toolbarbutton-border-radius: 0px !important; --tab-border-radius: 0px !important; --urlbar-container-height: 38px !important; }
+
+/* faint grid texture on the toolbar and a gradient rule instead of a flat border */
+#nav-bar { background-image: repeating-linear-gradient(90deg, #4fa3ae0a 0 1px, transparent 1px 28px) !important; }
+#navigator-toolbox { border-bottom: 0 !important; }
+#navigator-toolbox::after { content: ""; display: block; height: 1px; background: linear-gradient(90deg, #4fa3ae 0, #4fa3ae66 18%, #16233a 55%, transparent); }
+
+/* tabs: cut corner, gradient plate, "//" marker on the active one */
+.tabbrowser-tab { padding-inline: 1px !important; }
+.tab-background { clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%); border-inline: 0 !important; }
+.tab-background[selected] { background: linear-gradient(to bottom, #4fa3ae30, var(--nc-surf) 70%) !important; border-top: 2px solid var(--nc-teal) !important; }
+.tabbrowser-tab:not([selected]) .tab-background { border-bottom: 1px solid var(--nc-line) !important; }
+.tabbrowser-tab[selected] .tab-label::before { content: "// "; color: var(--nc-teal); }
+.tab-label { text-transform: uppercase; font-size: 12px !important; letter-spacing: 1.2px !important; }
+.tab-close-button { border-radius: 0 !important; }
+#tabs-newtab-button, .tabs-newtab-button { color: var(--nc-teal) !important; }
+
+/* address bar: chamfered corners with drawn diagonals, prompt-style */
+#urlbar, #urlbar-background, #urlbar-input-container, .urlbar-input-container, #searchbar { border-radius: 0 !important; }
+#urlbar-background { clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px)); position: relative; background-image: linear-gradient(90deg, #4fa3ae1a, transparent 40%) !important; }
+#urlbar-background::before, #urlbar-background::after { content: ""; position: absolute; width: 12px; height: 12px; pointer-events: none; }
+#urlbar-background::before { right: 0; top: 0; background: linear-gradient(to top left, transparent calc(50% - .6px), #4fa3ae calc(50% - .6px), #4fa3ae calc(50% + .6px), transparent calc(50% + .6px)); }
+#urlbar-background::after { left: 0; bottom: 0; background: linear-gradient(to top left, transparent calc(50% - .6px), #4fa3ae calc(50% - .6px), #4fa3ae calc(50% + .6px), transparent calc(50% + .6px)); }
+#urlbar[focused] #urlbar-background { background-image: linear-gradient(90deg, #4fa3ae33, transparent 55%) !important; }
+#identity-box, #tracking-protection-icon-container { border-radius: 0 !important; }
+#urlbar-input::placeholder { color: var(--nc-dim) !important; letter-spacing: 1px; }
+.urlbar-input-container::before { content: "›"; color: var(--nc-teal); font-family: "JetBrainsMono Nerd Font Mono", monospace; margin-inline: 2px 4px; display: none; }
+
+/* toolbar buttons: underline instead of blob */
+toolbarbutton.toolbarbutton-1 > .toolbarbutton-icon, #nav-bar toolbarbutton { border-radius: 0 !important; }
+#nav-bar toolbarbutton:hover:not([disabled]) { background: #4fa3ae1f !important; box-shadow: inset 0 -2px var(--nc-teal) !important; }
+#nav-bar toolbarbutton[open], #nav-bar toolbarbutton:hover:active { background: #4fa3ae33 !important; }
+
+/* bookmarks: small caps, teal underline on hover */
+#PersonalToolbar { border-top: 1px solid var(--nc-line) !important; }
+.bookmark-item .toolbarbutton-text { font-family: "Rajdhani", "Tektur", sans-serif !important; font-weight: 600 !important; font-size: 12px !important; letter-spacing: 1px !important; text-transform: uppercase; }
+.bookmark-item:hover { background: #4fa3ae1a !important; box-shadow: inset 0 -2px var(--nc-teal) !important; }
+
+/* menus & panels: teal edge, no shadow blobs */
+menupopup, panel { --panel-shadow: none !important; --panel-border-color: #4fa3ae66 !important; border: 1px solid #4fa3ae66 !important; }
+menuitem[_moz-menuactive], .subviewbutton:hover { box-shadow: inset 3px 0 var(--nc-teal) !important; }
+/* the pill: Firefox sets the radius on the nested background with higher specificity */
+:root { --urlbar-border-radius: 0px !important; --toolbarbutton-border-radius: 0px !important; }
+#nav-bar #urlbar > #urlbar-background, #nav-bar #urlbar[focused] > #urlbar-background, #nav-bar #urlbar[open] > #urlbar-background,
+#nav-bar #urlbar-input-container, #nav-bar #urlbar-input-container:hover, #nav-bar #identity-box, #nav-bar #urlbar-input-container > * { border-radius: 0 !important; }
+#urlbar-searchmode-switcher, #urlbar-searchmode-switcher-chicklet, #urlbar-searchmode-switcher > *, #userContext-icons, .urlbar-page-action, .urlbar-icon { border-radius: 0 !important; }
+#urlbar-searchmode-switcher { background: #4fa3ae1f !important; clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%); }

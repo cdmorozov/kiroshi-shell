@@ -1,0 +1,10 @@
+configuration {
+  modi: "drun,run,window";
+  show-icons: true;
+  icon-theme: "Papirus-Dark";
+  display-drun: "> EXEC";
+  display-run: "> RUN";
+  display-window: "> LINK";
+  drun-display-format: "{name}";
+}
+@theme "~/.config/rofi/nightcity.rasi"

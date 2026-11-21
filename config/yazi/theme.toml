@@ -1,0 +1,92 @@
+# Night City HUD palette: navy surfaces, muted teal accent, red only for danger
+
+[mgr]
+cwd = { fg = "#4fa3ae", bold = true }
+hovered         = { fg = "#081020", bg = "#4fa3ae", bold = true }
+preview_hovered = { underline = true }
+find_keyword  = { fg = "#ffa62b", bold = true }
+find_position = { fg = "#ff3ea5", bg = "reset", bold = true }
+marker_copied   = { fg = "#3fd47e", bg = "#3fd47e" }
+marker_cut      = { fg = "#e60000", bg = "#e60000" }
+marker_marked   = { fg = "#7fbcc5", bg = "#7fbcc5" }
+marker_selected = { fg = "#ffa62b", bg = "#ffa62b" }
+count_copied   = { fg = "#081020", bg = "#3fd47e" }
+count_cut      = { fg = "#081020", bg = "#e60000" }
+count_selected = { fg = "#081020", bg = "#ffa62b" }
+border_symbol = "│"
+border_style  = { fg = "#16233a" }
+
+[tabs]
+active   = { fg = "#081020", bg = "#4fa3ae", bold = true }
+inactive = { fg = "#8fa3b8", bg = "#0e1a30" }
+
+[mode]
+normal_main = { fg = "#081020", bg = "#4fa3ae", bold = true }
+normal_alt  = { fg = "#4fa3ae", bg = "#0e1a30" }
+select_main = { fg = "#081020", bg = "#ffa62b", bold = true }
+select_alt  = { fg = "#ffa62b", bg = "#0e1a30" }
+unset_main  = { fg = "#081020", bg = "#ff3ea5", bold = true }
+unset_alt   = { fg = "#ff3ea5", bg = "#0e1a30" }
+
+[status]
+overall   = { bg = "#081020" }
+perm_type  = { fg = "#4fa3ae" }
+perm_read  = { fg = "#ffa62b" }
+perm_write = { fg = "#e60000" }
+perm_exec  = { fg = "#3fd47e" }
+perm_sep   = { fg = "#3a4a63" }
+progress_label  = { fg = "#c9d1db", bold = true }
+progress_normal = { fg = "#4fa3ae", bg = "#16233a" }
+progress_error  = { fg = "#e60000", bg = "#16233a" }
+
+[input]
+border   = { fg = "#4fa3ae" }
+title    = { fg = "#c9d1db" }
+value    = { fg = "#c9d1db" }
+selected = { reversed = true }
+
+[pick]
+border   = { fg = "#4fa3ae" }
+active   = { fg = "#ffa62b", bold = true }
+inactive = {}
+
+[confirm]
+border  = { fg = "#e60000" }
+title   = { fg = "#e60000", bold = true }
+content = { fg = "#c9d1db" }
+
+[cmp]
+border   = { fg = "#4fa3ae" }
+active   = { fg = "#081020", bg = "#4fa3ae" }
+inactive = { fg = "#8fa3b8" }
+
+[tasks]
+border  = { fg = "#4fa3ae" }
+title   = { fg = "#c9d1db" }
+hovered = { fg = "#081020", bg = "#4fa3ae" }
+
+[which]
+cols            = 3
+mask            = { bg = "#081020" }
+cand            = { fg = "#4fa3ae" }
+rest            = { fg = "#3a4a63" }
+desc            = { fg = "#8fa3b8" }
+separator       = "  ›  "
+separator_style = { fg = "#3a4a63" }
+
+[help]
+on      = { fg = "#4fa3ae" }
+run     = { fg = "#ff3ea5" }
+hovered = { reversed = true, bold = true }
+footer  = { fg = "#081020", bg = "#4fa3ae" }
+
+[filetype]
+rules = [
+  { mime = "image/*", fg = "#7fbcc5" },
+  { mime = "{audio,video}/*", fg = "#ff3ea5" },
+  { mime = "application/{zip,rar,7z*,tar,gzip,xz,zstd,bzip*,lzma,compress,archive,cpio,arj,xar,ms-cab*}", fg = "#ffa62b" },
+  { mime = "application/{pdf,doc,rtf}", fg = "#ffd23f" },
+  { url = "*", is = "exec", fg = "#3fd47e" },
+  { url = "*/", fg = "#4fa3ae", bold = true },
+  { url = "*", fg = "#c9d1db" },
+]

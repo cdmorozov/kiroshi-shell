@@ -1,0 +1,22 @@
+{
+  "name": "night-city-hud",
+  "displayName": "Night City HUD",
+  "description": "Navy + muted teal theme matching the Hyprland rice",
+  "version": "1.0.0",
+  "publisher": "netrun",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "contributes": {
+    "themes": [
+      {
+        "label": "Night City HUD",
+        "uiTheme": "vs-dark",
+        "path": "./themes/night-city-hud.json"
+      }
+    ]
+  }
+}

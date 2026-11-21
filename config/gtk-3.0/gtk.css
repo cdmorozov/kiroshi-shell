@@ -1,0 +1,24 @@
+/* Cyberpunk HUD */
+@define-color accent_color #6fb0bb;
+@define-color accent_bg_color #2c7f8c;
+@define-color accent_fg_color #ffffff;
+@define-color window_bg_color #081020;
+@define-color window_fg_color #c9d1db;
+@define-color view_bg_color #0b1424;
+@define-color view_fg_color #c9d1db;
+@define-color headerbar_bg_color #0b1628;
+@define-color headerbar_fg_color #c9d1db;
+@define-color headerbar_border_color #16233a;
+@define-color card_bg_color #0e1a30;
+@define-color card_fg_color #c9d1db;
+@define-color sidebar_bg_color #0a1324;
+@define-color sidebar_fg_color #c9d1db;
+@define-color secondary_sidebar_bg_color #081020;
+@define-color popover_bg_color #0e1a30;
+@define-color popover_fg_color #c9d1db;
+@define-color dialog_bg_color #0b1628;
+@define-color dialog_fg_color #c9d1db;
+@define-color warning_bg_color #ffa62b;
+@define-color error_bg_color #ff4d6a;
+@define-color success_bg_color #3fd47e;
+@define-color destructive_bg_color #ff3ea5;

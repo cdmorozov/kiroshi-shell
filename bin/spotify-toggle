@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Spotify lives on the hidden workspace special:music; this shows / hides it instantly.
+# If it is not running (closed with Super+Q) it is started again first.
+win() { hyprctl clients -j | python3 -c '
+import json,sys
+for c in json.load(sys.stdin):
+    if c["class"] in ("spotify","Spotify","com.spotify.Client"):
+        print(c["address"], c["workspace"]["name"]); break'; }
+read -r addr ws < <(win)
+if [ -z "$addr" ]; then
+    flatpak run com.spotify.Client >/dev/null 2>&1 &
+    for _ in $(seq 1 200); do read -r addr ws < <(win); [ -n "$addr" ] && break; sleep 0.2; done
+    ws="special:music"
+fi
+[ -z "$addr" ] && exit 1
+if [ "$ws" = "special:music" ]; then
+    cur=$(hyprctl activeworkspace -j | python3 -c 'import json,sys; print(json.load(sys.stdin)["id"])')
+    hyprctl dispatch "hl.dsp.window.move({ workspace = \"$cur\", window = \"address:$addr\" })" >/dev/null
+    hyprctl dispatch "hl.dsp.focus({ window = \"address:$addr\" })" >/dev/null
+else
+    hyprctl dispatch "hl.dsp.window.move({ workspace = \"special:music\", follow = false, window = \"address:$addr\" })" >/dev/null
+fi

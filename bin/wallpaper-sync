@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Keeps hyprpaper (and the lock screen) in sync with GNOME Settings -> Appearance -> Background.
+FALLBACK="$HOME/.config/hypr/wall.png"
+CUR="$HOME/.config/hypr/wall-current"
+S=org.gnome.desktop.background
+
+apply() {
+    local uri path mode fit
+    uri=$(gsettings get $S picture-uri-dark | sed "s/^'//; s/'$//")
+    [ -z "$uri" ] || [ "$uri" = "''" ] && uri=$(gsettings get $S picture-uri | sed "s/^'//; s/'$//")
+    path=$(python3 -c 'import sys,urllib.parse as u; print(u.unquote(u.urlparse(sys.argv[1]).path))' "$uri")
+    [ -f "$path" ] || path="$FALLBACK"
+    mode=$(gsettings get $S picture-options | tr -d "'")
+    case "$mode" in scaled|centered) fit=contain ;; wallpaper) fit=tile ;; stretched|spanned) fit=fill ;; *) fit=cover ;; esac
+    ln -sf "$path" "$CUR"
+    hyprctl hyprpaper wallpaper ",$path,$fit" >/dev/null 2>&1
+}
+
+until hyprctl hyprpaper listactive >/dev/null 2>&1; do sleep 0.5; done
+apply
+gsettings monitor $S 2>/dev/null | while read -r _; do sleep 0.2; apply; done

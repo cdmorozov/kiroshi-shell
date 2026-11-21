@@ -1,0 +1,23 @@
+/* Night City HUD — Spotify, safe subset */
+:root { --nc-teal: #4fa3ae; --nc-line: #16233a; --nc-dim: #3a4a63; }
+
+body, button, input { font-family: "Tektur", "Rajdhani", sans-serif !important; }
+
+/* sharper corners */
+.main-card-card, .main-image-image, img { border-radius: 2px !important; }
+
+/* thin teal rule above the player bar */
+.Root__now-playing-bar { border-top: 1px solid var(--nc-teal) !important; }
+
+/* active row: teal rule on the left */
+.main-trackList-trackListRow:hover, .main-trackList-selected { box-shadow: inset 3px 0 0 var(--nc-teal) !important; }
+
+/* thin scrollbars */
+::-webkit-scrollbar { width: 6px !important; }
+::-webkit-scrollbar-thumb { background: var(--nc-dim) !important; }
+::-webkit-scrollbar-thumb:hover { background: var(--nc-teal) !important; }
+
+/* minimal: hide clutter */
+.main-topBar-UpgradeButton, [data-testid="upgrade-button"], a[href*="/premium"],
+.main-topBar-buddyFeed, [data-testid="friend-activity-button"],
+[data-testid="whats-new-button"], .main-topBar-installAppButton, [data-testid="download-app-button"] { display: none !important; }

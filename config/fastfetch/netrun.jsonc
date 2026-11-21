@@ -1,0 +1,25 @@
+// Night City terminal header (kitty)
+{
+  "logo": { "type": "file-raw", "source": "@HOME@/.config/fastfetch/arasaka-dots.ansi", "width": 40, "height": 12, "padding": { "top": 1, "left": 1, "right": 4 } },
+  "display": {
+    "separator": "  ",
+    "key": { "width": 9 },
+    "color": { "keys": "38;2;143;163;184", "title": "38;2;201;209;219", "output": "38;2;201;209;219" }
+  },
+  "modules": [
+    { "type": "title", "format": "{user-name}@{host-name}" },
+    { "type": "custom", "format": "{#38;2;58;74;99}----------------" },
+    { "type": "os",      "key": "OS",      "format": "{name} {version-id}" },
+    { "type": "command", "key": "KERNEL",  "text": "uname -r | cut -d. -f1-3" },
+    { "type": "command", "key": "SESSION", "text": "echo \"$(cat ~/.local/state/netrun/session 2>/dev/null || echo 1) // NIGHT CITY\"" },
+    { "type": "custom",  "key": "PROFILE", "format": "NETRUNNER" },
+    { "type": "uptime",  "key": "UPTIME",  "format": "{days}d {hours}h {minutes}m" },
+    { "type": "command", "key": "QUEUE",   "text": "n=$(cat ~/.cache/netrun/updates 2>/dev/null || echo 0); [ \"$n\" -gt 0 ] && printf '\\033[38;2;255;166;43m%s PENDING' \"$n\" || echo CLEARED" },
+    { "type": "command", "key": "SHIELD",  "text": "systemctl is-active -q firewalld && printf '\\033[38;2;79;163;174mARMED // FIREWALLD' || printf '\\033[38;2;230;0;0mDOWN'" },
+    { "type": "command", "key": "ICE",     "text": "p=$(free | awk '/Mem:/{printf \"%d\", $3*100/$2}'); [ \"$p\" -lt 80 ] && printf '\\033[38;2;79;163;174mNOMINAL // MEM %s%%' \"$p\" || printf '\\033[38;2;230;0;0mSTRAINED // MEM %s%%' \"$p\"" },
+    "break",
+    { "type": "command", "key": " ", "keyWidth": 1, "text": "echo \"Welcome back, ghost.\"" },
+    { "type": "command", "key": " ", "keyWidth": 1, "text": "n=$(cat ~/.cache/netrun/updates 2>/dev/null || echo 0); [ \"$n\" -gt 0 ] && printf '\\033[38;2;255;210;63m%s updates pending.' \"$n\" || printf '\\033[38;2;79;163;174mSystem patched.'" },
+    { "type": "command", "key": " ", "keyWidth": 1, "text": "printf '\\033[38;2;58;74;99mReady when you are.'" }
+  ]
+}

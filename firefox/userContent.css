@@ -1,0 +1,69 @@
+/* thin teal scrollbars on all pages and dark new-tab/about pages */
+@-moz-document url-prefix("about:") { :root { --in-content-page-background: #081020 !important; --in-content-page-color: #c9d1db !important; --in-content-box-background: #0e1a30 !important; --in-content-primary-button-background: #2c7f8c !important; --in-content-accent-color: #4fa3ae !important; } }
+* { scrollbar-color: #3a4a63 transparent !important; scrollbar-width: thin !important; }
+
+/* NIGHTCITY-NEWTAB: transparent start page, pins only */
+@-moz-document url("about:home"), url("about:newtab"), url("about:blank") {
+  :root, body, .outer-wrapper, #root, .wallpaper, .wallpaper-input-container {
+    background: transparent !important; background-image: none !important; --newtab-background-color: transparent !important;
+    --newtab-background-color-secondary: transparent !important;
+  }
+  .search-wrapper .search-handoff-button, .search-wrapper input { background-color: #0e1a30cc !important; border: 1px solid #16233a !important; border-radius: 0 !important; color: #c9d1db !important; }
+  .top-site-outer:hover .tile, .top-site-outer.active .tile { box-shadow: 0 0 0 1px #4fa3ae !important; }
+  .top-site-outer .tile { border-radius: 2px !important; background-color: #0e1a30cc !important; }
+  .top-site-outer .title { color: #c9d1db !important; font-family: "Rajdhani","Tektur",sans-serif !important; font-weight: 700 !important; letter-spacing: .5px; }
+  .logo-and-wordmark, .logo-and-wordmark-wrapper, .weather, .widgets, [class*="widget"], .discovery-stream, section.ds-outer-wrapper-breakpoint-override { display: none !important; }
+  .customize-menu, .personalize-button { opacity: .35 !important; }
+}
+
+/* ============ v2: HUD frame and numbered pins for the start page ============ */
+@-moz-document url("about:home"), url("about:newtab") {
+  html::after {   /* corner brackets */
+    content: ""; position: fixed; inset: 16px; pointer-events: none; z-index: 5;
+    background:
+      linear-gradient(#4fa3ae,#4fa3ae) top left / 26px 2px, linear-gradient(#4fa3ae,#4fa3ae) top left / 2px 26px,
+      linear-gradient(#4fa3ae,#4fa3ae) top right / 26px 2px, linear-gradient(#4fa3ae,#4fa3ae) top right / 2px 26px,
+      linear-gradient(#4fa3ae,#4fa3ae) bottom left / 26px 2px, linear-gradient(#4fa3ae,#4fa3ae) bottom left / 2px 26px,
+      linear-gradient(#4fa3ae,#4fa3ae) bottom right / 26px 2px, linear-gradient(#4fa3ae,#4fa3ae) bottom right / 2px 26px;
+    background-repeat: no-repeat; opacity: .75;
+  }
+  html::before {  /* status block, top-left */
+    content: "//  NETRUNNER.OS  —  BROWSER\A接続中   ·   SECURE LINK   ·   AES-256";
+    white-space: pre; position: fixed; left: 44px; top: 40px; z-index: 5; pointer-events: none;
+    font: 11px/2 "JetBrainsMono Nerd Font Mono", "Tektur", monospace; letter-spacing: 2px; color: #4fa3ae;
+    animation: nc-flicker 7s steps(1) infinite;
+  }
+  body::before {  /* footer block, bottom-left */
+    content: "LOCAL NODE  //  AK-07\A記録   ·   SUB 144"; white-space: pre; position: fixed; left: 44px; bottom: 38px; z-index: 5; pointer-events: none;
+    font: 10px/1.9 "JetBrainsMono Nerd Font Mono", "Tektur", monospace; letter-spacing: 2px; color: #3a4a63;
+  }
+  body::after {   /* ruler, top-right */
+    content: ""; position: fixed; right: 44px; top: 44px; width: 220px; height: 8px; z-index: 5; pointer-events: none;
+    background: repeating-linear-gradient(90deg, #4fa3ae99 0 1px, transparent 1px 10px), repeating-linear-gradient(90deg, #4fa3aecc 0 1px, transparent 1px 50px);
+    background-size: 100% 4px, 100% 8px; background-repeat: no-repeat; background-position: bottom, bottom;
+  }
+  #root::before { /* slow scan line */
+    content: ""; position: fixed; left: 0; right: 0; top: 0; height: 90px; pointer-events: none; z-index: 4;
+    background: linear-gradient(to bottom, transparent, #4fa3ae14 85%, #4fa3ae44); animation: nc-scan 11s linear infinite;
+  }
+  @keyframes nc-scan { from { transform: translateY(-100px); } to { transform: translateY(100vh); } }
+  @keyframes nc-flicker { 0%,93%,97%,100% { opacity: 1; } 94% { opacity: .35; } 95% { opacity: .9; } 96% { opacity: .5; } }
+  @keyframes nc-in { from { opacity: 0; transform: translateX(-26px); } to { opacity: 1; transform: none; } }
+
+  /* search: chamfered, mono prompt */
+  .search-wrapper .search-handoff-button, .search-wrapper input {
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+    border-color: #4fa3ae66 !important; font-family: "JetBrainsMono Nerd Font Mono", monospace !important; letter-spacing: .5px;
+  }
+  /* pins: numbered, chamfered, staggered entry */
+  .top-sites-list { counter-reset: nc; }
+  .top-site-outer { counter-increment: nc; position: relative; animation: nc-in .45s cubic-bezier(.2,.8,.2,1) both; }
+  .top-site-outer:nth-child(1) { animation-delay: .05s } .top-site-outer:nth-child(2) { animation-delay: .10s } .top-site-outer:nth-child(3) { animation-delay: .15s }
+  .top-site-outer:nth-child(4) { animation-delay: .20s } .top-site-outer:nth-child(5) { animation-delay: .25s } .top-site-outer:nth-child(6) { animation-delay: .30s }
+  .top-site-outer:nth-child(7) { animation-delay: .35s } .top-site-outer:nth-child(8) { animation-delay: .40s } .top-site-outer:nth-child(9) { animation-delay: .45s }
+  .top-site-outer:nth-child(n+10) { animation-delay: .5s }
+  .top-site-outer::before { content: counter(nc, decimal-leading-zero); position: absolute; top: 3px; left: 5px; z-index: 3; font: 9px "JetBrainsMono Nerd Font Mono", monospace; color: #4fa3aecc; letter-spacing: 1px; }
+  .top-site-outer .tile { clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 0 100%); }
+  .top-site-outer:hover .tile { box-shadow: none !important; background-color: #4fa3ae2e !important; outline: 1px solid #4fa3ae; }
+  .top-site-outer .title { text-transform: uppercase; font-size: 11px !important; letter-spacing: 1.4px !important; }
+}

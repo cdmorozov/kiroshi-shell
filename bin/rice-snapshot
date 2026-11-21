@@ -1,0 +1,11 @@
+#!/bin/sh
+# rice-snapshot NAME        -> save current rice under ~/.config/rice-snapshots/NAME
+# rice-snapshot --list      -> list snapshots
+R="$HOME/.config/rice-snapshots"
+PARTS="hypr waybar rofi quickshell kitty fish fastfetch wlogout cava fontconfig gtk-3.0 gtk-4.0 starship.toml yazi mpv"
+[ "$1" = "--list" ] && { ls -1 "$R" | grep -v '^rice-'; exit 0; }
+name="${1:-$(date +%Y-%m-%d_%H%M)}"; dst="$R/$name"
+[ -e "$dst" ] && { echo "snapshot '$name' already exists"; exit 1; }
+mkdir -p "$dst"
+for p in $PARTS; do [ -e "$HOME/.config/$p" ] && cp -a "$HOME/.config/$p" "$dst/"; done
+echo "saved: $dst"

@@ -1,0 +1,18 @@
+#!/bin/sh
+# rice-restore NAME [PART...] -> restore whole snapshot or only some parts
+#   parts: hypr waybar rofi quickshell kitty fish fastfetch wlogout cava fontconfig gtk-3.0 gtk-4.0 starship.toml yazi
+R="$HOME/.config/rice-snapshots"
+name="$1"; shift
+src="$R/$name"; [ -d "$src" ] || { echo "no snapshot '$name'"; ls -1 "$R" | grep -v '^rice-'; exit 1; }
+parts="$*"; [ -z "$parts" ] && parts=$(ls "$src")
+for p in $parts; do
+  [ -e "$src/$p" ] || { echo "skip $p (not in snapshot)"; continue; }
+  rm -rf "$HOME/.config/$p.before-restore"; [ -e "$HOME/.config/$p" ] && mv "$HOME/.config/$p" "$HOME/.config/$p.before-restore"
+  cp -a "$src/$p" "$HOME/.config/$p" && echo "restored $p"
+done
+# reload what is running
+hyprctl reload >/dev/null 2>&1
+pkill -SIGUSR2 waybar 2>/dev/null
+pkill -x qs 2>/dev/null; (setsid qs -p "$HOME/.config/quickshell" >/dev/null 2>&1 &)
+fc-cache -f >/dev/null 2>&1
+echo "done"

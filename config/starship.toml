@@ -1,0 +1,54 @@
+# Cyberpunk HUD — needs a Nerd Font
+add_newline = true
+format = '''[\[](#8fa3b8)$username$hostname $directory[\]](#8fa3b8)$git_branch$git_status$cmd_duration$character'''
+
+[username]
+show_always = true
+style_user = "bold #8fa3b8"
+style_root = "bold #ff4d6a"
+format = "[$user]($style)"
+
+[hostname]
+ssh_only = false
+style = "#c9d1db"
+format = "[@](#8fa3b8)[$hostname](#c9d1db)"
+
+[directory]
+style = "#c9d1db"
+format = "[$path]($style)[$read_only]($read_only_style)"
+read_only = " "
+truncation_length = 3
+truncation_symbol = "…/"
+
+[git_branch]
+symbol = " "
+style = "#ff3ea5"
+format = " [$symbol$branch]($style)"
+
+[git_status]
+style = "#ffa62b"
+format = '([\[$all_status$ahead_behind\]]($style) )'
+
+[python]
+symbol = " "
+style = "#3fd47e"
+format = "[$symbol$version]($style) "
+
+[nodejs]
+symbol = " "
+style = "#3fd47e"
+format = "[$symbol$version]($style) "
+
+[rust]
+symbol = " "
+style = "#ffa62b"
+format = "[$symbol$version]($style) "
+
+[cmd_duration]
+min_time = 2000
+style = "#3a4a63"
+format = "[ $duration]($style) "
+
+[character]
+success_symbol = "[▶](bold #3fd47e)"
+error_symbol = "[▶](bold #ff3ea5)"

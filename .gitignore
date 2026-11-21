@@ -1,0 +1,4 @@
+*.bak
+*.v[0-9]
+*.qmlc
+.DS_Store

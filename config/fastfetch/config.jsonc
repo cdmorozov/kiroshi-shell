@@ -1,0 +1,5 @@
+{
+  "logo": { "type": "file-raw", "source": "@HOME@/.config/fastfetch/arasaka.ansi", "width": 40, "height": 18, "padding": { "right": 3 } },
+  "display": { "color": { "keys": "38;2;143;163;184", "title": "38;2;255;62;165", "separator": "38;2;58;74;99" }, "separator": " ▸ " },
+  "modules": ["title", "separator", "os", "kernel", "uptime", "shell", "de", "terminal", "cpu", "gpu", "memory", "disk", "break", "colors"]
+}
