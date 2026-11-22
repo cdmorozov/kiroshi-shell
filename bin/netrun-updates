@@ -2,5 +2,11 @@
 # refresh cached count of pending package updates (at most every 6h), runs in background
 f="$HOME/.cache/netrun/updates"
 [ -f "$f" ] && [ $(( $(date +%s) - $(stat -c %Y "$f") )) -lt 21600 ] && exit 0
-n=$(dnf -q check-update --refresh 2>/dev/null | grep -cE '^[A-Za-z0-9_.+-]+\.[a-z0-9_]+\s')
+if command -v dnf >/dev/null; then
+    n=$(dnf -q check-update --refresh 2>/dev/null | grep -cE '^[A-Za-z0-9_.+-]+\.[a-z0-9_]+\s')
+elif command -v apt-get >/dev/null; then
+    n=$(apt list --upgradable 2>/dev/null | grep -c upgradable)
+elif command -v checkupdates >/dev/null; then
+    n=$(checkupdates 2>/dev/null | wc -l)
+fi
 echo "${n:-0}" > "$f"

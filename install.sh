@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# NETRUNNER.OS rice installer for Fedora 44+ (Hyprland 0.57+ with the Lua config, Quickshell HUD).
+# NETRUNNER.OS rice installer for Fedora 44 (tested), Debian/Kali and Arch (experimental).
 # Safe by default: backs up whatever it replaces, asks before using sudo, can do a dry run.
 set -euo pipefail
 
@@ -36,25 +36,74 @@ w() { printf '\033[38;2;255;166;43m%s\033[0m\n' "$*"; }
 run() { if [ "$DRY" = 1 ]; then echo "  [dry-run] $*"; else "$@"; fi; }
 
 [ "$(id -u)" = 0 ] && { echo "Do not run this as root; it asks for sudo only where needed."; exit 1; }
-if ! grep -qi fedora /etc/os-release 2>/dev/null; then w "This is not Fedora. Packages are skipped; configs still install."; PACKAGES=0; fi
+# distro family: fedora (tested), debian (Debian/Kali/Ubuntu, experimental), arch (Arch/CachyOS/EndeavourOS, experimental)
+detect_distro() {
+    local id like
+    id="$(. /etc/os-release 2>/dev/null; echo "${ID:-}")"; like="$(. /etc/os-release 2>/dev/null; echo "${ID_LIKE:-}")"
+    case " $id $like " in
+        *" fedora "*|*" rhel "*) echo fedora ;;
+        *" debian "*|*" ubuntu "*|*" kali "*) echo debian ;;
+        *" arch "*) echo arch ;;
+        *) echo unknown ;;
+    esac
+}
+DISTRO="${NETRUNNER_DISTRO:-$(detect_distro)}"
+case "$DISTRO" in
+    fedora) ;;
+    debian|arch) w "$DISTRO family: support is experimental, Fedora is the tested one. Missing packages are skipped with a warning." ;;
+    *) w "Unknown distro: packages are skipped. Install the dependencies listed in README yourself; configs still install."; PACKAGES=0 ;;
+esac
 
 c "NETRUNNER.OS installer"
 echo "  configs  -> $CFG   (existing ones are copied to $BACKUP first)"
 echo "  scripts  -> $BIN"
-[ "$PACKAGES" = 1 ] && echo "  packages -> dnf (sudo), COPR sdegler/hyprland"
+[ "$PACKAGES" = 1 ] && echo "  packages -> $DISTRO package manager (sudo)"
 if [ "$YES" = 0 ] && [ "$DRY" = 0 ]; then read -rp "Continue? [y/N] " ans; [[ "$ans" =~ ^[Yy]$ ]] || exit 0; fi
 
 # ---------------------------------------------------------------- packages
+install_each() {  # install_each <installer cmd...> -- <packages...>; one by one so a missing package does not abort the rest
+    local cmd=() pkgs=() missing=() seen=0 a
+    for a in "$@"; do if [ "$a" = "--" ]; then seen=1; elif [ "$seen" = 1 ]; then pkgs+=("$a"); else cmd+=("$a"); fi; done
+    for a in "${pkgs[@]}"; do run "${cmd[@]}" "$a" || missing+=("$a"); done
+    [ "${#missing[@]}" -gt 0 ] && w "  not available from your repos, install by hand if you need them: ${missing[*]}"
+    return 0
+}
 if [ "$PACKAGES" = 1 ]; then
-    c "[1/6] packages"
-    run sudo dnf -y install dnf-plugins-core
-    run sudo dnf -y copr enable sdegler/hyprland
-    run sudo dnf -y install hyprland hyprlock hypridle hyprpaper hyprpolkitagent hyprshot \
-        xdg-desktop-portal-hyprland xdg-desktop-portal-gtk quickshell \
-        kitty fish eza bat zoxide fzf fd-find ripgrep fastfetch jq mpv cava rofi \
-        grim slurp wl-clipboard cliphist brightnessctl playerctl libnotify \
-        pavucontrol nm-connection-editor blueman nautilus gnome-control-center \
-        pipewire-utils wireplumber papirus-icon-theme p7zip p7zip-plugins ffmpegthumbnailer poppler-utils nwg-look
+    c "[1/6] packages ($DISTRO)"
+    case "$DISTRO" in
+    fedora)
+        run sudo dnf -y install dnf-plugins-core
+        run sudo dnf -y copr enable sdegler/hyprland
+        run sudo dnf -y install hyprland hyprlock hypridle hyprpaper hyprpolkitagent hyprshot \
+            xdg-desktop-portal-hyprland xdg-desktop-portal-gtk quickshell \
+            kitty fish eza bat zoxide fzf fd-find ripgrep fastfetch jq mpv cava rofi \
+            grim slurp wl-clipboard cliphist brightnessctl playerctl libnotify \
+            pavucontrol nm-connection-editor blueman nautilus gnome-control-center \
+            pipewire-utils wireplumber papirus-icon-theme p7zip p7zip-plugins ffmpegthumbnailer poppler-utils nwg-look unzip curl ;;
+    debian)
+        # Needs Hyprland 0.55+ (Lua config): Debian testing/unstable (Kali rolling follows testing) or trixie-backports.
+        run sudo apt-get update
+        install_each sudo apt-get install -y -- hyprland hyprlock hypridle hyprpaper hyprpolkitagent hyprshot \
+            xdg-desktop-portal-hyprland xdg-desktop-portal-gtk quickshell \
+            kitty fish eza bat zoxide fzf fd-find ripgrep fastfetch jq mpv cava rofi \
+            grim slurp wl-clipboard cliphist brightnessctl playerctl libnotify-bin \
+            pavucontrol network-manager-gnome blueman nautilus gnome-control-center \
+            pipewire-bin wireplumber papirus-icon-theme p7zip-full ffmpegthumbnailer poppler-utils nwg-look unzip curl
+        v="$(dpkg-query -W -f='${Version}' hyprland 2>/dev/null || true)"
+        [ -n "$v" ] && echo "  Hyprland $v installed (needs 0.55 or newer for the Lua config)"
+        # Debian ships these under other names
+        if [ "$DRY" = 0 ]; then mkdir -p "$BIN"
+            command -v fdfind >/dev/null && [ ! -e "$BIN/fd" ] && ln -s "$(command -v fdfind)" "$BIN/fd"
+            command -v batcat >/dev/null && [ ! -e "$BIN/bat" ] && ln -s "$(command -v batcat)" "$BIN/bat"
+        fi ;;
+    arch)
+        install_each sudo pacman -S --needed --noconfirm -- hyprland hyprlock hypridle hyprpaper hyprpolkitagent hyprshot \
+            xdg-desktop-portal-hyprland xdg-desktop-portal-gtk quickshell \
+            kitty fish eza bat zoxide fzf fd ripgrep fastfetch jq mpv cava rofi \
+            grim slurp wl-clipboard cliphist brightnessctl playerctl libnotify \
+            pavucontrol nm-connection-editor blueman nautilus gnome-control-center \
+            pipewire wireplumber papirus-icon-theme p7zip ffmpegthumbnailer poppler nwg-look unzip curl ;;
+    esac
 else c "[1/6] packages: skipped"; fi
 
 # ---------------------------------------------------------------- fonts
