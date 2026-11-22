@@ -6,13 +6,13 @@ a live telemetry desktop. Everything is one-command installable and reversible.
 
 [Русская версия](README.ru.md)
 
-![desktop](docs/img/desktop.png)
+![desktop](docs/img/desktop-2026-11-22.png)
 
 | Launcher (`Super+D`) | Terminal greeting |
 | --- | --- |
-| ![launcher](docs/img/launcher.png) | ![terminal](docs/img/terminal.png) |
+| ![launcher](docs/img/launcher-2026-11-22.png) | ![terminal](docs/img/terminal-2026-11-22.png) |
 
-![RADIOPORT](docs/img/radioport.png)
+![RADIOPORT](docs/img/radioport-2026-11-22.png)
 
 ## What you get
 
