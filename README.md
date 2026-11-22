@@ -4,7 +4,7 @@
 Muted navy and teal instead of loud neon, chamfered plates, kanji labels, a numbered app list,
 a live telemetry desktop. Everything is one-command installable and reversible.
 
-![desktop](docs/img/desktop-2026-11-22.png)
+![Desktop demo](docs/img/desktop-preview-2026-11-22.gif)
 
 | Launcher (`Super+D`) | Terminal greeting |
 | --- | --- |

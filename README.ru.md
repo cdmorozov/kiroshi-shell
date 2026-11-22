@@ -6,7 +6,7 @@
 
 [English version](README.md)
 
-![desktop](docs/img/desktop-2026-11-22.png)
+![Desktop demo](docs/img/desktop-preview-2026-11-22.gif)
 
 | Лаунчер (`Super+D`) | Терминал |
 | --- | --- |
