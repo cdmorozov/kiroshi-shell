@@ -12,6 +12,8 @@ a live telemetry desktop. Everything is one-command installable and reversible.
 | --- | --- |
 | ![launcher](docs/img/launcher.png) | ![terminal](docs/img/terminal.png) |
 
+![RADIOPORT](docs/img/radioport.png)
+
 ## What you get
 
 - **Top bar** (Quickshell): workspaces, window list, clock with kanji weekday, tray, CPU / MEM / VOL / NET / BT / BAT readouts. Click a readout to open its panel.

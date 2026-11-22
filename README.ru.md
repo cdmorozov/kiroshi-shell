@@ -12,6 +12,8 @@
 | --- | --- |
 | ![launcher](docs/img/launcher.png) | ![terminal](docs/img/terminal.png) |
 
+![RADIOPORT](docs/img/radioport.png)
+
 ## Что внутри
 
 - **Верхняя панель**: рабочие столы, список окон, часы с иероглифом дня недели, трей, показания CPU / MEM / VOL / NET / BT / BAT. Клик по показанию открывает его панель.
