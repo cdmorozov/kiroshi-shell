@@ -87,11 +87,16 @@ if [ "$PACKAGES" = 1 ]; then
             xdg-desktop-portal-hyprland xdg-desktop-portal-gtk quickshell \
             kitty fish eza bat zoxide fzf fd-find ripgrep fastfetch jq mpv cava rofi \
             grim slurp wl-clipboard cliphist brightnessctl playerctl libnotify-bin \
-            pavucontrol network-manager-gnome blueman nautilus gnome-control-center \
-            pipewire-bin wireplumber papirus-icon-theme p7zip-full ffmpegthumbnailer poppler-utils nwg-look unzip curl
+            pavucontrol nm-connection-editor blueman nautilus gnome-control-center \
+            pipewire-bin wireplumber papirus-icon-theme 7zip ffmpegthumbnailer poppler-utils nwg-look unzip curl \
+            fonts-noto-cjk fonts-jetbrains-mono qml6-module-qtquick qml6-module-qtquick-shapes qml6-module-qtquick-window \
+            qml6-module-qtquick-templates qml6-module-qtquick-layouts qml6-module-qtqml-workerscript
         v="$(dpkg-query -W -f='${Version}' hyprland 2>/dev/null || true)"
         [ -n "$v" ] && echo "  Hyprland $v installed (needs 0.55 or newer for the Lua config)"
-        # Debian ships these under other names
+        # Debian ships these under other names; hyprshot is a single script that Debian does not package
+        if [ "$DRY" = 0 ] && ! command -v hyprshot >/dev/null; then mkdir -p "$BIN"
+            curl -fsSL -o "$BIN/hyprshot" https://raw.githubusercontent.com/Gustash/Hyprshot/main/hyprshot && chmod +x "$BIN/hyprshot" || w "  hyprshot download failed (screenshot key will not work)"
+        fi
         if [ "$DRY" = 0 ]; then mkdir -p "$BIN"
             command -v fdfind >/dev/null && [ ! -e "$BIN/fd" ] && ln -s "$(command -v fdfind)" "$BIN/fd"
             command -v batcat >/dev/null && [ ! -e "$BIN/bat" ] && ln -s "$(command -v batcat)" "$BIN/bat"
@@ -102,7 +107,7 @@ if [ "$PACKAGES" = 1 ]; then
             kitty fish eza bat zoxide fzf fd ripgrep fastfetch jq mpv cava rofi \
             grim slurp wl-clipboard cliphist brightnessctl playerctl libnotify \
             pavucontrol nm-connection-editor blueman nautilus gnome-control-center \
-            pipewire wireplumber papirus-icon-theme p7zip ffmpegthumbnailer poppler nwg-look unzip curl ;;
+            pipewire wireplumber papirus-icon-theme p7zip ffmpegthumbnailer poppler nwg-look unzip curl noto-fonts-cjk ;;
     esac
 else c "[1/6] packages: skipped"; fi
 
