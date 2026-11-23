@@ -1,4 +1,4 @@
--- NETRUNNER.OS — Hyprland 0.57+ (Lua config)
+-- Night City HUD — Hyprland 0.57 (Lua config)
 -- navy surfaces, thin teal lines, Arasaka red only for alerts
 
 local terminal    = "kitty"
@@ -24,7 +24,7 @@ hl.on("hyprland.start", function()
     start("session", "dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE HYPRLAND_INSTANCE_SIGNATURE && systemctl --user start hyprland-session.target")
     start("polkit",  "systemctl --user start hyprpolkitagent")
     start("paper",   "hyprpaper")
-    --@spotify@ start("spotify", "flatpak run com.spotify.Client")   -- warm start: hidden on special:music
+    start("spotify", "flatpak run com.spotify.Client")   -- warm start: hidden on special:music
     start("wallsync", "wallpaper-sync")   -- follows GNOME Settings > Background
     start("clip",    "wl-paste --watch cliphist store")
     start("hud",     "qs -p ~/.config/quickshell")
@@ -123,9 +123,12 @@ hl.layer_rule({ name = "blur-rofi",   match = { namespace = "rofi" },        blu
 hl.layer_rule({ name = "blur-swaync", match = { namespace = "swaync-control-center" }, blur = true, ignore_alpha = 0.2 })
 hl.layer_rule({ name = "blur-logout", match = { namespace = "logout_dialog" }, blur = true })
 
+-- the terminal is see-through but NOT blurred: re-blurring it on every keystroke froze input on the iGPU
+hl.window_rule({ name = "kitty-no-blur", match = { class = "^(kitty)$" }, no_blur = true })
 hl.window_rule({ name = "suppress-maximize-events", match = { class = ".*" }, suppress_event = "maximize" })
-hl.window_rule({ name = "firefox-glass", match = { class = "^(org.mozilla.firefox|firefox)$" }, opacity = "0.78 0.70", no_blur = true })
---@spotify@ hl.window_rule({ name = "spotify-hidden", match = { class = "^([Ss]potify|com.spotify.Client)$" }, workspace = "special:music silent" })
+-- Firefox is see-through only on the start page (its title is "New Tab"/"Mozilla Firefox"); real sites stay solid
+hl.window_rule({ name = "firefox-glass", match = { class = "^(org.mozilla.firefox|firefox)$", title = "^(New Tab|Mozilla Firefox).*$" }, opacity = "0.78 0.70", no_blur = true })
+hl.window_rule({ name = "spotify-hidden", match = { class = "^([Ss]potify|com.spotify.Client)$" }, workspace = "special:music silent" })
 hl.window_rule({ name = "spotify-glass", match = { class = "^([Ss]potify|com.spotify.Client)$" }, opacity = "0.84 0.76", no_blur = true })
 hl.window_rule({ name = "vscode-glass", match = { class = "^(code|Code|code-oss)$" }, opacity = "0.80 0.72", no_blur = true })
 hl.window_rule({ name = "float-pavucontrol", match = { class = "org.pulseaudio.pavucontrol" }, float = true })
@@ -149,6 +152,7 @@ hl.bind(mainMod .. " + F",           hl.dsp.window.fullscreen())
 hl.bind(mainMod .. " + J",           hl.dsp.layout("togglesplit"))
 hl.bind(mainMod .. " + L",           hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + SHIFT + E",   hl.dsp.exit())                         -- emergency: back to login screen
+hl.bind(mainMod .. " + C",           hl.dsp.exec_cmd("claude-desktop"))      -- Claude
 hl.bind(mainMod .. " + Escape",      hl.dsp.exec_cmd("qs -p ~/.config/quickshell ipc call power toggle"))
 hl.bind(mainMod .. " + I",           hl.dsp.exec_cmd("env XDG_CURRENT_DESKTOP=GNOME gnome-control-center"))   -- system settings
 hl.bind(mainMod .. " + N",           hl.dsp.exec_cmd("qs -p ~/.config/quickshell ipc call notifs history"))   -- message log
@@ -169,7 +173,7 @@ for i = 1, 10 do
 end
 
 hl.bind(mainMod .. " + S",          hl.dsp.workspace.toggle_special("magic"))
---@spotify@ hl.bind(mainMod .. " + SHIFT + M",  hl.dsp.exec_cmd("spotify-toggle"))   -- show / hide Spotify (kept running in the background)
+hl.bind(mainMod .. " + SHIFT + M",  hl.dsp.exec_cmd("spotify-toggle"))   -- show / hide Spotify (kept running in the background)
 hl.bind(mainMod .. " + SHIFT + S",  hl.dsp.window.move({ workspace = "special:magic" }))
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
 hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
