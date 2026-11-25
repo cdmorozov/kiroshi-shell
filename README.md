@@ -32,6 +32,7 @@ a live telemetry desktop. Everything is one-command installable and reversible.
 | Distro | Status | How Hyprland comes in |
 | --- | --- | --- |
 | **Fedora 44** | tested, this is what it was built on | `sdegler/hyprland` COPR, enabled by the installer |
+| Fedora 43 and older | terminal, fish, Quickshell and configs install; no Hyprland 0.55+ build exists, so upgrade to 44 for the desktop | `errornointernet/quickshell` COPR |
 | **Debian testing / sid, Kali Linux (rolling)** | experimental, not tested by the author | Kali rolling has `hyprland` 0.56 and `quickshell` 0.3 in its repos (checked in the package index); Debian testing/sid has 0.57. On Debian 13 use `trixie-backports` (Hyprland 0.55) |
 | **Arch, CachyOS, EndeavourOS** | experimental, not tested by the author | both are in the official repos |
 | Ubuntu and others | not supported yet | Hyprland and Quickshell must be built or installed by hand |

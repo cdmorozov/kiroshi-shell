@@ -34,6 +34,7 @@
 | Дистрибутив | Статус | Откуда берётся Hyprland |
 | --- | --- | --- |
 | **Fedora 44** | проверено, на нём всё и делалось | COPR `sdegler/hyprland`, установщик подключает сам |
+| Fedora 43 и старше | ставятся терминал, fish, Quickshell и конфиги; Hyprland 0.55+ под них не собран, для рабочего стола обновитесь до 44 | COPR `errornointernet/quickshell` |
 | **Debian testing / sid, Kali Linux (rolling)** | экспериментально, автор не проверял | в Kali rolling есть `hyprland` 0.56 и `quickshell` 0.3 (проверено по индексу пакетов), в Debian testing/sid 0.57. На Debian 13 берите `trixie-backports` (Hyprland 0.55) |
 | **Arch, CachyOS, EndeavourOS** | экспериментально, автор не проверял | оба пакета есть в официальных репозиториях |
 | Ubuntu и остальные | пока не поддерживаются | Hyprland и Quickshell нужно собрать или поставить вручную |

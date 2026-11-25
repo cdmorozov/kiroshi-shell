@@ -40,8 +40,11 @@ if status is-interactive
     if type -q fastfetch
         if test "$TERM" = xterm-kitty
             set -l sf ~/.local/state/netrun/session
+            mkdir -p (path dirname $sf)
             echo (math (cat $sf 2>/dev/null; or echo 0) + 1) > $sf
-            ~/.local/bin/netrun-updates &; disown
+            if test -x ~/.local/bin/netrun-updates
+                ~/.local/bin/netrun-updates &; disown
+            end
             fastfetch -c ~/.config/fastfetch/netrun.jsonc
             echo
         else

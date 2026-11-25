@@ -36,6 +36,11 @@ w() { printf '\033[38;2;255;166;43m%s\033[0m\n' "$*"; }
 run() { if [ "$DRY" = 1 ]; then echo "  [dry-run] $*"; else "$@"; fi; }
 
 [ "$(id -u)" = 0 ] && { echo "Do not run this as root; it asks for sudo only where needed."; exit 1; }
+# the configs live next to this script; a lone install.sh (curl | bash, single-file download) has nothing to copy
+for d in hypr quickshell kitty fish fastfetch; do
+    [ -d "$SRC/config/$d" ] || { echo "config/$d not found next to install.sh ($SRC)."; echo "Clone the whole repo and run it from there:"
+        echo "  git clone https://github.com/cdmorozov/kiroshi-shell && cd kiroshi-shell && ./install.sh"; exit 1; }
+done
 # distro family: fedora (tested), debian (Debian/Kali/Ubuntu, experimental), arch (Arch/CachyOS/EndeavourOS, experimental)
 detect_distro() {
     local id like
@@ -72,17 +77,27 @@ if [ "$PACKAGES" = 1 ]; then
     c "[1/6] packages ($DISTRO)"
     case "$DISTRO" in
     fedora)
-        run sudo dnf -y install dnf-plugins-core
-        run sudo dnf -y copr enable sdegler/hyprland
-        run sudo dnf -y install hyprland hyprlock hypridle hyprpaper hyprpolkitagent hyprshot \
-            xdg-desktop-portal-hyprland xdg-desktop-portal-gtk quickshell \
-            kitty fish eza bat zoxide fzf fd-find ripgrep fastfetch jq mpv cava rofi \
-            grim slurp wl-clipboard cliphist brightnessctl playerctl libnotify \
-            pavucontrol nm-connection-editor blueman nautilus gnome-control-center \
-            pipewire-utils wireplumber papirus-icon-theme p7zip p7zip-plugins ffmpegthumbnailer poppler-utils nwg-look unzip curl ;;
+        fv="$(. /etc/os-release; echo "${VERSION_ID:-0}")"
+        run sudo dnf -y install dnf-plugins-core || true
+        # sdegler/hyprland (Hyprland 0.55+, Lua config) only builds for Fedora 44 and newer
+        if [ "$fv" = rawhide ] || [ "$fv" -ge 44 ] 2>/dev/null; then
+            run sudo dnf -y copr enable sdegler/hyprland || w "  could not enable COPR sdegler/hyprland, Hyprland packages will be missing"
+        else
+            w "  Fedora $fv: no Hyprland 0.55+ build exists for it (the config needs one). Everything else installs;"
+            w "  for the desktop itself upgrade to Fedora 44: https://docs.fedoraproject.org/en-US/quick-docs/upgrading-fedora-offline/"
+            run sudo dnf -y copr enable errornointernet/quickshell || w "  could not enable COPR errornointernet/quickshell"
+        fi
+        FPK=(hyprland hyprlock hypridle hyprpaper hyprpolkitagent hyprshot
+            xdg-desktop-portal-hyprland xdg-desktop-portal-gtk quickshell
+            kitty fish eza bat zoxide fzf fd-find ripgrep fastfetch jq mpv cava rofi
+            grim slurp wl-clipboard cliphist brightnessctl playerctl libnotify
+            pavucontrol nm-connection-editor blueman nautilus gnome-control-center
+            pipewire-utils wireplumber papirus-icon-theme p7zip p7zip-plugins ffmpegthumbnailer poppler-utils nwg-look unzip curl)
+        # one transaction, skipping what this release lacks; if that still fails, go package by package
+        run sudo dnf -y install --skip-unavailable "${FPK[@]}" || install_each sudo dnf -y install -- "${FPK[@]}" ;;
     debian)
         # Needs Hyprland 0.55+ (Lua config): Debian testing/unstable (Kali rolling follows testing) or trixie-backports.
-        run sudo apt-get update
+        run sudo apt-get update || w "  apt-get update failed, trying with the current package lists"
         install_each sudo apt-get install -y -- hyprland hyprlock hypridle hyprpaper hyprpolkitagent hyprshot \
             xdg-desktop-portal-hyprland xdg-desktop-portal-gtk quickshell \
             kitty fish eza bat zoxide fzf fd-find ripgrep fastfetch jq mpv cava rofi \
